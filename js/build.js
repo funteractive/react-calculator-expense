@@ -6,14 +6,18 @@ var ItemList = React.createClass({displayName: "ItemList",
     var createItem = function(item) {
       return (
         React.createElement("li", null, 
-          React.createElement("span", null, React.createElement("strong", null, "品目："), item.use), 
-          React.createElement("span", null, React.createElement("strong", null, "値段："), item.price, " 円"), 
-          React.createElement("span", null, React.createElement("strong", null, "申請者："), item.name)
+          React.createElement("span", null, item.use, "（", item.price, " 円、", item.name, "）")
         )
       );
     };
 
     return React.createElement("ul", null, this.props.items.map(createItem));
+  }
+});
+
+var Sum = React.createClass({displayName: "Sum",
+  render: function() {
+    return React.createElement("p", null, React.createElement("strong", null, "合計："), this.props.sum, " 円");
   }
 });
 
@@ -37,14 +41,24 @@ var Form = React.createClass({displayName: "Form",
   onChangeName: function(e) {
     this.setState({ name: e.target.value });
   },
+  calculateSum: function(items) {
+    var sum = 0;
+    for(var i = 0, len = items.length; i < len; i++) {
+      sum += parseInt(items[i].price);
+    }
+
+    return sum;
+  },
   onClick: function(e) {
     e.preventDefault();
     var nextItems = this.state.items.concat({ use: this.state.use, price: this.state.price, name: this.state.name });
+    var sum = this.calculateSum(nextItems);
     this.setState({
       items: nextItems,
       use: '',
       price: '',
-      name: ''
+      name: '',
+      sum: sum
     });
   },
   handleSubmit: function(e) {
@@ -60,7 +74,8 @@ var Form = React.createClass({displayName: "Form",
           React.createElement("input", {type: "text", name: "name", placeholder: "名前", value: this.state.name, onChange: this.onChangeName}), 
           React.createElement("p", null, React.createElement("button", {type: "button", className: "btn btn-default", onClick: this.onClick}, "追加")), 
           React.createElement("p", null, React.createElement("input", {type: "submit", className: "btn btn-primary", value: "申請する"}))
-        )
+        ), 
+        React.createElement(Sum, {sum: this.state.sum})
       )
     );
   }

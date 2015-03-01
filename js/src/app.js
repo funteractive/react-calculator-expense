@@ -5,14 +5,18 @@ var ItemList = React.createClass({
     var createItem = function(item) {
       return (
         <li>
-          <span><strong>品目：</strong>{item.use}</span>
-          <span><strong>値段：</strong>{item.price} 円</span>
-          <span><strong>申請者：</strong>{item.name}</span>
+          <span>{item.use}（{item.price} 円、{item.name}）</span>
         </li>
       );
     };
 
     return <ul>{this.props.items.map(createItem)}</ul>;
+  }
+});
+
+var Sum = React.createClass({
+  render: function() {
+    return <p><strong>合計：</strong>{this.props.sum} 円</p>;
   }
 });
 
@@ -36,14 +40,24 @@ var Form = React.createClass({
   onChangeName: function(e) {
     this.setState({ name: e.target.value });
   },
+  calculateSum: function(items) {
+    var sum = 0;
+    for(var i = 0, len = items.length; i < len; i++) {
+      sum += parseInt(items[i].price);
+    }
+
+    return sum;
+  },
   onClick: function(e) {
     e.preventDefault();
     var nextItems = this.state.items.concat({ use: this.state.use, price: this.state.price, name: this.state.name });
+    var sum = this.calculateSum(nextItems);
     this.setState({
       items: nextItems,
       use: '',
       price: '',
-      name: ''
+      name: '',
+      sum: sum
     });
   },
   handleSubmit: function(e) {
@@ -60,6 +74,7 @@ var Form = React.createClass({
           <p><button type="button" className="btn btn-default" onClick={this.onClick}>追加</button></p>
           <p><input type="submit" className="btn btn-primary" value="申請する" /></p>
         </form>
+        <Sum sum={this.state.sum} />
       </div>
     );
   }
