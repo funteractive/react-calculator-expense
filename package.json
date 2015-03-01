@@ -21,6 +21,7 @@
     "gulp-data": "*",
     "gulp-load-plugins": "*",
     "gulp-rename": "*",
+    "gulp-webserver": "*",
     "gulp-uglify": "*"
   }
 }

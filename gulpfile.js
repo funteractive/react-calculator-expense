@@ -2,30 +2,13 @@
 
 var gulp         = require('gulp'),
   $              = require('gulp-load-plugins')({ pattern: ['gulp-*', 'gulp.*'] }),
-  browserSync    = require('browser-sync'),
   browserify     = require('browserify'),
   buffer         = require('vinyl-buffer'),
-  source         = require('vinyl-source-stream'),
-  runSequence    = require('run-sequence')
+  source         = require('vinyl-source-stream')
   ;
 
 var jsPath             = './js/';
 
-// Run browser-sync
-gulp.task('browser-sync', function() {
-  browserSync({
-    server: {
-      baseDir: './'
-    },
-    ghostMode: {
-      location: true
-    }
-  });
-});
-
-gulp.task('reload', function() {
-  browserSync.reload({ stream: true });
-});
 
 gulp.task('js', function() {
   browserify(jsPath + 'src/app.js')
@@ -36,15 +19,21 @@ gulp.task('js', function() {
     .pipe(gulp.dest(jsPath));
 });
 
+gulp.task('webserver', function() {
+  gulp.src('./')
+    .pipe($.webserver({
+      livereload: true,
+      directoryListing: true,
+      open: true
+    }));
+});
+
 // Watch tasks
 gulp.task('watch', function() {
-  // Watch html
-  gulp.watch(['./*.html'], browserSync.reload);
-
   // Watch JavaScript
-  gulp.watch([jsPath + 'src/*'], ['js', browserSync.reload]);
+  gulp.watch([jsPath + 'src/*'], ['js']);
 });
 
 // Default tasks
-gulp.task('default', ['browser-sync', 'watch'], function() {
+gulp.task('default', ['webserver', 'watch'], function() {
 });

@@ -1,13 +1,72 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 var React = require('react');
 
-var HelloMessage = React.createClass({displayName: "HelloMessage",
+var ItemList = React.createClass({displayName: "ItemList",
   render: function() {
-    return React.createElement("div", null, "Hello ", this.props.name);
+    var createItem = function(item) {
+      return (
+        React.createElement("li", null, 
+          React.createElement("span", null, React.createElement("strong", null, "品目："), item.use), 
+          React.createElement("span", null, React.createElement("strong", null, "値段："), item.price, " 円"), 
+          React.createElement("span", null, React.createElement("strong", null, "申請者："), item.name)
+        )
+      );
+    };
+
+    return React.createElement("ul", null, this.props.items.map(createItem));
   }
 });
 
-React.render(React.createElement(HelloMessage, {name: "keisuke"}), document.getElementById("app"));
+var Form = React.createClass({displayName: "Form",
+  getDefaultProps: function() {
+    return ({
+      initialCount: 1
+    });
+  },
+  getInitialState: function() {
+    return ({
+      items: []
+    });
+  },
+  onChangeUse: function(e) {
+    this.setState({ use: e.target.value });
+  },
+  onChangePrice: function(e) {
+    this.setState({ price: e.target.value });
+  },
+  onChangeName: function(e) {
+    this.setState({ name: e.target.value });
+  },
+  onClick: function(e) {
+    e.preventDefault();
+    var nextItems = this.state.items.concat({ use: this.state.use, price: this.state.price, name: this.state.name });
+    this.setState({
+      items: nextItems,
+      use: '',
+      price: '',
+      name: ''
+    });
+  },
+  handleSubmit: function(e) {
+    e.preventDefault();
+  },
+  render: function() {
+    return (
+      React.createElement("div", null, 
+        React.createElement("form", {onSubmit: this.handleSubmit}, 
+          React.createElement(ItemList, {items: this.state.items}), 
+          React.createElement("input", {type: "text", name: "use", placeholder: "品目", value: this.state.use, onChange: this.onChangeUse}), 
+          React.createElement("input", {type: "number", name: "price", placeholder: "値段", value: this.state.price, onChange: this.onChangePrice}), 
+          React.createElement("input", {type: "text", name: "name", placeholder: "名前", value: this.state.name, onChange: this.onChangeName}), 
+          React.createElement("p", null, React.createElement("button", {type: "button", className: "btn btn-default", onClick: this.onClick}, "追加")), 
+          React.createElement("p", null, React.createElement("input", {type: "submit", className: "btn btn-primary", value: "申請する"}))
+        )
+      )
+    );
+  }
+});
+
+React.render(React.createElement(Form, null), document.getElementById('inputForm'));
 
 },{"react":148}],2:[function(require,module,exports){
 // shim for using process in browser
