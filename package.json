@@ -1,0 +1,26 @@
+{
+  "name": "react-calculator-expense",
+  "uri": "https://funteractive.co.jp/",
+  "version": "0.1.0",
+  "browserify": {
+    "transform": [
+      "reactify"
+    ]
+  },
+  "devDependencies": {
+    "browser-sync": "*",
+    "browserify": "*",
+    "react": "*",
+    "reactify": "*",
+    "vinyl-buffer": "*",
+    "vinyl-source-stream": "*",
+    "run-sequence": "*",
+    "rimraf": "*",
+    "gulp": "*",
+    "gulp-bower": "*",
+    "gulp-data": "*",
+    "gulp-load-plugins": "*",
+    "gulp-rename": "*",
+    "gulp-uglify": "*"
+  }
+}
