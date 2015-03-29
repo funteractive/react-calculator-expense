@@ -10,6 +10,8 @@
   "devDependencies": {
     "browser-sync": "*",
     "browserify": "*",
+    "flux": "*",
+    "keymirror": "*",
     "react": "*",
     "reactify": "*",
     "vinyl-buffer": "*",
@@ -22,6 +24,7 @@
     "gulp-load-plugins": "*",
     "gulp-rename": "*",
     "gulp-webserver": "*",
-    "gulp-uglify": "*"
+    "gulp-uglify": "*",
+    "object-assign": "*"
   }
 }

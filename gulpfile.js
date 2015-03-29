@@ -1,27 +1,27 @@
 'use strict';
 
-var gulp         = require('gulp'),
-  $              = require('gulp-load-plugins')({ pattern: ['gulp-*', 'gulp.*'] }),
-  browserify     = require('browserify'),
-  buffer         = require('vinyl-buffer'),
-  source         = require('vinyl-source-stream')
+var gulp          = require('gulp'),
+  gulpLoadPlugins = require('gulp-load-plugins')({ pattern: ['gulp-*', 'gulp.*'] }),
+  browserify      = require('browserify'),
+  buffer          = require('vinyl-buffer'),
+  source          = require('vinyl-source-stream')
   ;
 
-var jsPath             = './js/';
+var jsPath = './js/';
 
 
 gulp.task('js', function() {
-  browserify(jsPath + 'src/app.js')
+  browserify(jsPath + 'app.js')
     .bundle()
     .pipe(source('build.js'))
     .pipe(buffer())
-    //.pipe($.uglify())
+    //.pipe(gulpLoadPlugins.uglify())
     .pipe(gulp.dest(jsPath));
 });
 
 gulp.task('webserver', function() {
   gulp.src('./')
-    .pipe($.webserver({
+    .pipe(gulpLoadPlugins.webserver({
       livereload: true,
       directoryListing: true,
       open: true
@@ -31,7 +31,7 @@ gulp.task('webserver', function() {
 // Watch tasks
 gulp.task('watch', function() {
   // Watch JavaScript
-  gulp.watch([jsPath + 'src/*'], ['js']);
+  gulp.watch([jsPath + '**/*.js'], ['js']);
 });
 
 // Default tasks
